@@ -29,21 +29,15 @@ public record TreeFeatureImpl(
     @Override
     public Object toMinecraft() {
         return new net.minecraft.world.level.levelgen.feature.TreeFeature(
-            net.minecraft.core.Holder.direct(
-                trunkProvider.<net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider>asHandle()
-            ),
+            trunkProvider.asHandle(),
             trunkPlacer.asHandle(),
-            net.minecraft.core.Holder.direct(
-                foliageProvider.<net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider>asHandle()
-            ),
+            foliageProvider.asHandle(),
             foliagePlacer.asHandle(),
             rootPlacer.map(RootPlacer::asHandle),
             minimumSize.asHandle(),
             decorators.stream().map(TreeDecorator::<net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator>asHandle).toList(),
             ignoreVines,
-            net.minecraft.core.Holder.direct(
-                belowTrunkProvider.<net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider>asHandle()
-            )
+            belowTrunkProvider.asHandle()
         );
     }
 }

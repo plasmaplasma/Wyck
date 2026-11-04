@@ -1,7 +1,11 @@
 package dev.wyck.worldgen.biome;
 
 import com.mojang.datafixers.util.Pair;
+import dev.wyck.biome.Biome;
+import dev.wyck.keys.ResourceKey;
 import dev.wyck.util.BootstrapSafeMinecraftRegistries;
+import dev.wyck.util.DimensionSources;
+import dev.wyck.worldgen.climate.ClimatePoint;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 
@@ -11,6 +15,14 @@ import java.util.List;
 @NullMarked
 @ApiStatus.Internal
 public record MultiNoiseBiomeSourceImpl(@Override List<Entry> biomes) implements MultiNoiseBiomeSource {
+    public MultiNoiseBiomeSourceImpl() {
+        this(DimensionSources.vanillaPairs(ResourceKey.minecraft("overworld")).stream()
+            .map(pair -> new Entry(
+                Biome.reference(ResourceKey.of(pair.getSecond().identifier().toString())),
+                ClimatePoint.decode(pair.getFirst())
+            )).toList());
+    }
+
     @Override
     public Object toMinecraft() {
         net.minecraft.core.Registry<net.minecraft.world.level.biome.Biome> biomesRegistry = BootstrapSafeMinecraftRegistries.mappedRegistry(net.minecraft.core.registries.Registries.BIOME);

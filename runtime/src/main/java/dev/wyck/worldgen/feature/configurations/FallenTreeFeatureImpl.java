@@ -19,9 +19,7 @@ public record FallenTreeFeatureImpl(
     @Override
     public Object toMinecraft() {
         return new net.minecraft.world.level.levelgen.feature.FallenTreeFeature(
-            net.minecraft.core.Holder.direct(
-                trunkProvider.<net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider>asHandle()
-            ),
+            trunkProvider.asHandle(),
             logLength.asHandle(),
             stumpDecorators.stream().map(TreeDecorator::<net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator>asHandle).toList(),
             logDecorators.stream().map(TreeDecorator::<net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator>asHandle).toList()

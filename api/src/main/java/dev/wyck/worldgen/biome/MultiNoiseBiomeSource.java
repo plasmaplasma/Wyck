@@ -46,6 +46,14 @@ public interface MultiNoiseBiomeSource extends BiomeSource {
         return Holder.WIRE.construct(biomes);
     }
 
+    static MultiNoiseBiomeSource vanillaOverworldCopy() {
+        record Holder() {
+            static final ConstructWireProvider<MultiNoiseBiomeSource> WIRE =
+                ConstructWireProvider.create("dev.wyck.worldgen.biome.MultiNoiseBiomeSourceImpl");
+        }
+        return Holder.WIRE.construct();
+    }
+
     /**
      * Creates a new builder.
      * @return a new builder

@@ -204,6 +204,8 @@ public final class DatapackPromotion {
         }
         // let the provider mint the ops so the owner matches its own lookups exactly
         RegistryOps<JsonElement> ops = this.vanilla.createSerializationContext(JsonOps.INSTANCE);
+        RegistryOps<JsonElement> placementOps = BootstrapSafeMinecraftRegistries.serialization()
+            .createSerializationContext(JsonOps.INSTANCE);
 
         for (Map.Entry<ResourceKey<Feature>, Feature> entry : this.configuredFeatures.entrySet()) {
             writeJson(root, "worldgen/feature", entry.getKey(),
@@ -213,9 +215,9 @@ public final class DatapackPromotion {
         for (Map.Entry<ResourceKey<PlacedFeature>, PlacedFileData> entry : this.placedForFiles.entrySet()) {
             PlacedFileData data = entry.getValue();
 
-            // placement modifiers are leaves with no registry refs, plain ops is enough
+            // block predicates in placement modifiers require the bootstrap block registry
             DataResult<JsonElement> placement = net.minecraft.world.level.levelgen.placement.PlacementModifier.CODEC
-                .listOf().encodeStart(JsonOps.INSTANCE, data.placement());
+                .listOf().encodeStart(placementOps, data.placement());
             JsonElement placementJson = placement.getOrThrow(message -> new IllegalStateException("placement encode failed: " + message));
 
             JsonObject json = new JsonObject();
